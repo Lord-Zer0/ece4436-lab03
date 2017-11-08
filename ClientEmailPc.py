@@ -16,9 +16,6 @@
 # BASIC SETUP & INITIALIZATION
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # import statements ::
-from socket import *			# import socket module
-import base64                   # for encoding auth credentials
-import ssl
 import smtplib
 
 # define sample message data
@@ -41,9 +38,14 @@ headers = ["From: " + sender,
            "Content-Type: text/html"]
 headers = "\r\n".join(headers)
 session = smtplib.SMTP(MAIL_SERVER, MAIL_PORT)
+#
 session.ehlo()
+#
 session.starttls()
+#
 session.login(sender, password)
+#
 session.sendmail(sender, recipient, headers + "\r\n\r\n" + msg)
+#
 session.quit()
 
