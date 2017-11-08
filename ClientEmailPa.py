@@ -59,27 +59,18 @@ print(recvtls)
 if recvtls[:3] != '220':			# reply err: expected reply not received
     print("220 reply not received from server.")
 
-# Send TLS HELO command and print server response.
-tlshCommand = 'TLS HELO David\r\n'
-clientSocket.send(tlshCommand.encode())
-# server response | expected code: 220 -----------------
-recvt2 = clientSocket.recv(1024).decode()
-print(recvt2)
-if recvt2[:3] != '220':			# reply err: expected reply not received
-    print("220 reply not received from server.")
-
 # Send AUTH command and print server response.
 authCommand = 'AUTH LOGIN\r\n'
-clientSocket.send(authCommand.encode())
+clientSocket.send(base64.b64encode('\x00' + authCommand))
 # server response | expected code: 220 -----------------
-recva1 = clientSocket.recv(1024).decode()
+recva1 = base64.b64decode(clientSocket.recv(1024))
 print(recva1)
 if recva1[:3] != '220':			# reply err: expected reply not received
     print("220 reply not received from server.")
 
 # Send base64 encrypted username
 username = "davgren3"
-user64 = base64.b64encode(username.encode('utf-8'))     # encrypt username
+user64 = base64.b64encode(('\x00' + username).encode('utf-8'))     # encrypt username
 clientSocket.send(user64)
 # server response | expected code: 250 -----------------
 recva2 = clientSocket.recv(1024).decode()
@@ -87,7 +78,7 @@ print(recva2)
 
 # Send base64 encrypted password
 password = 'theforestthroughttrees'
-pass64 = base64.b64encode(username.encode('utf-8'))     # encrypt password
+pass64 = base64.b64encode(('\x00' + password).encode('utf-8'))     # encrypt password
 clientSocket.send(pass64)
 # server response | expected code: 250 -----------------
 recva3 = clientSocket.recv(1024).decode()
