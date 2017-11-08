@@ -4,7 +4,7 @@ import base64                   # for encoding auth credentials
 
 msg = "\r\n I love computer networks!"
 endmsg = '\r\n.\r\n'
-MAIL_PORT = 465
+MAIL_PORT = 587
 
 # Choose a mail server (e.g. Google mail server) and call it mailserver
 mailserver = ('smtp.gmail.com', MAIL_PORT)

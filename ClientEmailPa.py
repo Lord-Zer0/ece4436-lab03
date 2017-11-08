@@ -6,12 +6,12 @@
 # Filename: ClientEmailPa.py					#
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= #
 
-# --------------------- Additional Information ---------------------- #
-# Default SMTP Ports: [ 25, 465, 587 ]                                #
-# Mail Servers: [ 'smtp.gmail.com', 'smtp.gmx.com', 'smtp.aol.com' ]  #
-# Sender: 'deviantverity@gmail.com'                                   #
-# Recipient: 'cmccaul8@uwo.ca'                                        #
-# ------------------------------------------------------------------- #
+# ------------------- Additional Information ------------------- #
+# Default SMTP Ports: [ 25, 465, 587 ]                           #
+# Mail Server: [ 'smtp.gmail.com' ]                              #
+# Sender: 'deviantverity@gmail.com'                              #
+# Recipient: 'cmccaul8@uwo.ca'                                   #
+# -------------------------------------------------------------- #
 
 # BASIC SETUP & INITIALIZATION
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -22,7 +22,7 @@ import base64                   # for encoding auth credentials
 # define sample message data
 msg = "\r\n I love computer networks!"
 endmsg = '\r\n.\r\n'  			# msg ends with '.' on a line by itself
-MAIL_PORT = 465				    # using default SMTP port
+MAIL_PORT = 587				    # using default SMTP port
 
 # Choose a mail server (e.g. Google mail server) and call it mailserver
 mailserver = ('smtp.gmail.com', MAIL_PORT)
@@ -46,6 +46,10 @@ recv1 = clientSocket.recv(1024).decode()
 print(recv1)
 if recv1[:3] != '250':			# reply err: expected reply not received
     print("250 reply not received from server.")
+
+# Secure Authentication Layer (TLS/SSL Commands Follow)
+# =====================================================================
+#
 
 # Send MAIL FROM command and print server response.
 # =====================================================================
