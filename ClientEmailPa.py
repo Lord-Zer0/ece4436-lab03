@@ -49,7 +49,16 @@ if recv1[:3] != '250':			# reply err: expected reply not received
 
 # Secure Authentication Layer (TLS/SSL Commands Follow)
 # =====================================================================
-#
+# Send STARTTLS command and print server response.
+stlsCommand = 'STARTTLS\r\n'
+clientSocket.send(stlsCommand.encode())
+# server response | expected code: 220 -----------------
+recvtls = clientSocket.recv(1024).decode()
+print(recvtls)
+if recvtls[:3] != '220':			# reply err: expected reply not received
+    print("220 reply not received from server.")
+
+# ... more stuff goes here ...
 
 # Send MAIL FROM command and print server response.
 # =====================================================================
