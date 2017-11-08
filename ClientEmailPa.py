@@ -18,6 +18,7 @@
 # import statements ::
 from socket import *			# import socket module
 import base64                   # for encoding auth credentials
+import ssl
 
 # define sample message data
 msg = "\r\n I love computer networks!"
@@ -59,29 +60,36 @@ print(recvtls)
 if recvtls[:3] != '220':			# reply err: expected reply not received
     print("220 reply not received from server.")
 
+# Wrap socket using SSL
+secureSocket = ssl.wrap_socket(clientSocket)
+print('test')
+
 # Send AUTH command and print server response.
 authCommand = 'AUTH LOGIN\r\n'
-clientSocket.send(base64.b64encode('\x00' + authCommand))
+secureSocket.send(authCommand.encode())
 # server response | expected code: 220 -----------------
-recva1 = base64.b64decode(clientSocket.recv(1024))
+recva1 = secureSocket.recv(1024).decode()
 print(recva1)
-if recva1[:3] != '220':			# reply err: expected reply not received
-    print("220 reply not received from server.")
+if recva1[:3] != '334':			# reply err: expected reply not received
+    print("334 reply not received from server.")
 
 # Send base64 encrypted username
-username = "davgren3"
-user64 = base64.b64encode(('\x00' + username).encode('utf-8'))     # encrypt username
-clientSocket.send(user64)
+username = "davgren3@gmail.com"
+username = username.encode('utf-8')
+user64 = base64.b64encode(username)     # encrypt username
+secureSocket.send(user64 + '\r\n'.encode())
+print('test')
 # server response | expected code: 250 -----------------
-recva2 = clientSocket.recv(1024).decode()
+recva2 = secureSocket.recv(1024).decode()
 print(recva2)
 
 # Send base64 encrypted password
-password = 'theforestthroughttrees'
-pass64 = base64.b64encode(('\x00' + password).encode('utf-8'))     # encrypt password
-clientSocket.send(pass64)
+password = "theforestthroughttrees"
+password = password.encode('utf-8')
+pass64 = base64.b64encode(password)     # encrypt password
+secureSocket.send(pass64 + '\r\n'.encode())
 # server response | expected code: 250 -----------------
-recva3 = clientSocket.recv(1024).decode()
+recva3 = secureSocket.recv(1024).decode()
 print(recva3)
 
 # ... more stuff goes here ...
@@ -89,9 +97,9 @@ print(recva3)
 # Send MAIL FROM command and print server response.
 # =====================================================================
 fromCommand = 'MAIL FROM:<davgren@gmail.com>\r\n'
-clientSocket.send(fromCommand.encode())
+secureSocket.send(fromCommand.encode())
 # server response | expected code: 250 -----------------
-recv2 = clientSocket.recv(1024).decode()
+recv2 = secureSocket.recv(1024).decode()
 print(recv2)
 if recv2[:3] != '250':			# reply err: expected reply not received
     print("250 reply not received from server.")
@@ -99,9 +107,9 @@ if recv2[:3] != '250':			# reply err: expected reply not received
 # Send RCPT TO command and print server response.
 # =====================================================================
 toCommand = 'RCPT TO:<cmccaul8@uwo.ca>\r\n'
-clientSocket.send(toCommand.encode())
+secureSocket.send(toCommand.encode())
 # server response | expected code: 250 -----------------
-recv3 = clientSocket.recv(1024).decode()
+recv3 = secureSocket.recv(1024).decode()
 print(recv3)
 if recv3[:3] != '250':			# reply err: expected reply not received
     print("250 reply not received from server.")
@@ -109,19 +117,19 @@ if recv3[:3] != '250':			# reply err: expected reply not received
 # Send DATA command and print server response.
 # =====================================================================
 dataCommand = 'DATA\r\n'
-clientSocket.send(dataCommand.encode())
+secureSocket.send(dataCommand.encode())
 # server response | expected code: 354 -----------------
-recv4 = clientSocket.recv(1024).decode()
+recv4 = secureSocket.recv(1024).decode()
 print(recv4)
 if recv4[:3] != '354':			# reply err: expected reply not received
     print("354 reply not received from server.")
 
 # Send message data.
 # =====================================================================
-clientSocket.send(msg.encode())
+secureSocket.send(msg.encode())
 # end of message
-clientSocket.send(endmsg.encode())	# Message ends with a single period.
-recvD = clientSocket.recv(1024).decode()
+secureSocket.send(endmsg.encode()) # Message ends with a single period.
+recvD = secureSocket.recv(1024).decode()
 # server response | expected code: 250 -----------------
 print(recvD)
 if recvD[:3] != '250':			# reply err: expected reply not received
@@ -130,13 +138,13 @@ if recvD[:3] != '250':			# reply err: expected reply not received
 # Send QUIT command and get server response.
 # =====================================================================
 quitCommand = 'QUIT\r\n'
-clientSocket.send(quitCommand.encode())
+secureSocket.send(quitCommand.encode())
 # server response | expected code: 221 -----------------
-recvQ = clientSocket.recv(1024).decode()
+recvQ = secureSocket.recv(1024).decode()
 print(recvQ)
 if recvQ[:3] != '221':			# reply err: expected reply not received
     print("221 reply not received from server.")
 
 # _____________________________________________________________________
 
-clientSocket.close()			# close socket when done
+secureSocket.close()			# close socket when done
