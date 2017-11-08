@@ -47,6 +47,7 @@ print(recv1)
 if recv1[:3] != '250':			# reply err: expected reply not received
     print("250 reply not received from server.")
 
+# =====================================================================
 # Secure Authentication Layer (TLS/SSL Commands Follow)
 # =====================================================================
 # Send STARTTLS command and print server response.
@@ -56,6 +57,15 @@ clientSocket.send(stlsCommand.encode())
 recvtls = clientSocket.recv(1024).decode()
 print(recvtls)
 if recvtls[:3] != '220':			# reply err: expected reply not received
+    print("220 reply not received from server.")
+
+# Send TLS HELO command and print server response.
+tlshCommand = 'TLS HELO David\r\n'
+clientSocket.send(tlshCommand.encode())
+# server response | expected code: 220 -----------------
+recvt2 = clientSocket.recv(1024).decode()
+print(recvt2)
+if recvt2[:3] != '220':			# reply err: expected reply not received
     print("220 reply not received from server.")
 
 # Send AUTH command and print server response.
@@ -70,7 +80,7 @@ if recva1[:3] != '220':			# reply err: expected reply not received
 # Send base64 encrypted username
 username = "davgren3"
 user64 = base64.b64encode(username.encode('utf-8'))     # encrypt username
-clientSocket.send(user64 + '\r\n'.encode())
+clientSocket.send(user64)
 # server response | expected code: 250 -----------------
 recva2 = clientSocket.recv(1024).decode()
 print(recva2)
@@ -78,17 +88,16 @@ print(recva2)
 # Send base64 encrypted password
 password = 'theforestthroughttrees'
 pass64 = base64.b64encode(username.encode('utf-8'))     # encrypt password
-clientSocket.send(pass64 + '\r\n'.encode())
+clientSocket.send(pass64)
 # server response | expected code: 250 -----------------
 recva3 = clientSocket.recv(1024).decode()
 print(recva3)
-
 
 # ... more stuff goes here ...
 
 # Send MAIL FROM command and print server response.
 # =====================================================================
-fromCommand = 'MAIL FROM:<deviantverity@gmail.com>\r\n'
+fromCommand = 'MAIL FROM:<davgren@gmail.com>\r\n'
 clientSocket.send(fromCommand.encode())
 # server response | expected code: 250 -----------------
 recv2 = clientSocket.recv(1024).decode()
