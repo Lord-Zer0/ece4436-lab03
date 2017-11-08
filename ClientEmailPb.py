@@ -19,6 +19,13 @@
 from socket import *			# import socket module
 import base64                   # for encoding auth credentials
 import ssl
+import cgi
+import uuid
+import os
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
+from email.header import Header
 
 # define sample message data
 msg = "\r\n I love computer networks!"
@@ -106,7 +113,7 @@ if recv2[:3] != '250':			# reply err: expected reply not received
 
 # Send RCPT TO command and print server response.
 # =====================================================================
-toCommand = 'RCPT TO:<cmccaul8@uwo.ca>\r\n'
+toCommand = 'RCPT TO:<aottogal@uwo.ca>\r\n'
 secureSocket.send(toCommand.encode())
 # server response | expected code: 250 -----------------
 recv3 = secureSocket.recv(1024).decode()
@@ -124,9 +131,22 @@ print(recv4)
 if recv4[:3] != '354':			# reply err: expected reply not received
     print("354 reply not received from server.")
 
+
 # Send message data.
 # =====================================================================
 secureSocket.send(msg.encode())
+
+# Send Image 
+#======================================================================
+catImg=dict(title=u'Cat Image', path=u'cat.jpg',cid=str(uuid.uuid4()))
+catMsg=MIMEMultipart('related')
+
+with open(catImg['path'],'rb') as file:
+    msg_image=MIMEImage(file.read(),name=os.path.basename(catImg['path']))
+    catMsg.attach(msg_image)
+msg_image.add_header('Content-ID','<{}>'.format(catImg['cid']))
+secureSocket.send((catMsg.as_string()).encode())
+
 # end of message
 secureSocket.send(endmsg.encode()) # Message ends with a single period.
 recvD = secureSocket.recv(1024).decode()
@@ -134,6 +154,12 @@ recvD = secureSocket.recv(1024).decode()
 print(recvD)
 if recvD[:3] != '250':			# reply err: expected reply not received
     print("250 reply not received from server.")
+
+
+
+
+
+
 
 # Send QUIT command and get server response.
 # =====================================================================
