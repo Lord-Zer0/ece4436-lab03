@@ -1,4 +1,4 @@
-# Lab 03 Mail Client -- Part One
+# Lab 03 Mail Client -- Part Two
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= #
 # Authors: Connor McCauley, Ashley Ottogalli	#
 # Email: cmccaul8@uwo.ca, aottogal@uwo.ca 		#
