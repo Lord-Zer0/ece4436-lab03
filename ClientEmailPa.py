@@ -58,6 +58,22 @@ print(recvtls)
 if recvtls[:3] != '220':			# reply err: expected reply not received
     print("220 reply not received from server.")
 
+# Send AUTH command and print server response.
+authCommand = 'AUTH LOGIN\r\n'
+clientSocket.send(authCommand.encode())
+# server response | expected code: 220 -----------------
+recvauth = clientSocket.recv(1024).decode()
+print(recvauth)
+
+# Send base64 encrypted username
+user = 'xxxxxx'
+                                    # encrypt username
+
+# Send base64 encrypted password
+pswd = 'xxxxxx'
+                                    # encrypt password
+
+
 # ... more stuff goes here ...
 
 # Send MAIL FROM command and print server response.
