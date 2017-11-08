@@ -9,7 +9,7 @@
 # ------------------- Additional Information ------------------- #
 # Default SMTP Ports: [ 25, 465, 587 ]                           #
 # Mail Server: [ 'smtp.gmail.com' ]                              #
-# Sender: 'deviantverity@gmail.com'                              #
+# Sender: 'davgren3@gmail.com'                                   #
 # Recipient: 'cmccaul8@uwo.ca'                                   #
 # -------------------------------------------------------------- #
 
@@ -62,16 +62,26 @@ if recvtls[:3] != '220':			# reply err: expected reply not received
 authCommand = 'AUTH LOGIN\r\n'
 clientSocket.send(authCommand.encode())
 # server response | expected code: 220 -----------------
-recvauth = clientSocket.recv(1024).decode()
-print(recvauth)
+recva1 = clientSocket.recv(1024).decode()
+print(recva1)
+if recva1[:3] != '220':			# reply err: expected reply not received
+    print("220 reply not received from server.")
 
 # Send base64 encrypted username
-user = 'xxxxxx'
-                                    # encrypt username
+username = "davgren3"
+user64 = base64.b64encode(username.encode('utf-8'))     # encrypt username
+clientSocket.send(user64 + '\r\n'.encode())
+# server response | expected code: 250 -----------------
+recva2 = clientSocket.recv(1024).decode()
+print(recva2)
 
 # Send base64 encrypted password
-pswd = 'xxxxxx'
-                                    # encrypt password
+password = 'theforestthroughttrees'
+pass64 = base64.b64encode(username.encode('utf-8'))     # encrypt password
+clientSocket.send(pass64 + '\r\n'.encode())
+# server response | expected code: 250 -----------------
+recva3 = clientSocket.recv(1024).decode()
+print(recva3)
 
 
 # ... more stuff goes here ...
