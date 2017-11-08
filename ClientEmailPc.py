@@ -1,4 +1,4 @@
-# Lab 03 Mail Client -- Part Two
+# Lab 03 Mail Client -- Part Three
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= #
 # Authors: Connor McCauley, Ashley Ottogalli	#
 # Email: cmccaul8@uwo.ca, aottogal@uwo.ca 		#
@@ -17,26 +17,38 @@
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # import statements ::
 import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.image import MIMEImage
+from email.mime.text import MIMEText
 
 # define sample message data
-msg = "\r\n I love computer networks!"
+text = "\r\n I love computer networks!"
 endmsg = '\r\n.\r\n'  			# msg ends with '.' on a line by itself
 MAIL_SERVER = 'smtp.gmail.com'
 MAIL_PORT = 587				    # using default SMTP port
 
 sender = 'davgren3@gmail.com'
-subject = 'mail with SMTP'
+subject = 'mail with SMTPLib'
 password = 'theforestthroughttrees'
 recipient = 'cmccaul8@uwo.ca'
+img_path = 'resource/img/kitten.jpg'
 
 print("Sending Email")
 
-headers = ["From: " + sender,
-           "Subject: " + subject,
-           "To: " + recipient,
-           "MIME-Version: 1.0",
-           "Content-Type: text/html"]
-headers = "\r\n".join(headers)
+msg = MIMEMultipart()
+msg["To"] = recipient
+msg["From"] = sender
+msg["Subject"] = subject
+
+msgText = MIMEText('<b>%s</b><br><img src="cid:%s"><br>' % (text, img_path), 'html')
+msg.attach(msgText)   # Added, and edited the previous line
+
+fp = open(img_path, 'rb')
+img = MIMEImage(fp.read())
+fp.close()
+img.add_header('Content-ID', '<{}>'.format(img_path))
+msg.attach(img)
+
 session = smtplib.SMTP(MAIL_SERVER, MAIL_PORT)
 #
 session.ehlo()
@@ -45,7 +57,7 @@ session.starttls()
 #
 session.login(sender, password)
 #
-session.sendmail(sender, recipient, headers + "\r\n\r\n" + msg)
+session.sendmail(sender, recipient, msg.as_string())
 #
 session.quit()
 

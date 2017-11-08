@@ -1,9 +1,9 @@
 # Lab 03 Mail Client -- Part One
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= #
-# Authors: Connor McCauley, Ashley Ottogalli	#
-# Email: cmccaul8@uwo.ca, aottogal@uwo.ca 		#
-# Date Modified: 2017-11-08						#
-# Filename: ClientEmailPa.py					#
+# Authors: Connor McCauley, Ashley Ottogalli    #
+# Email: cmccaul8@uwo.ca, aottogal@uwo.ca       #
+# Date Modified: 2017-11-08                     #
+# Filename: ClientEmailPa.py                    #
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= #
 
 # ------------------- Additional Information ------------------- #
@@ -22,8 +22,8 @@ import ssl
 
 # define sample message data
 msg = "\r\n I love computer networks!"
-endmsg = '\r\n.\r\n'  			# msg ends with '.' on a line by itself
-MAIL_PORT = 587				    # using default SMTP port
+endmsg = '\r\n.\r\n'            # msg ends with '.' on a line by itself
+MAIL_PORT = 587                 # using default SMTP port
 
 # Choose a mail server (e.g. Google mail server) and call it mailserver
 mailserver = ('smtp.gmail.com', MAIL_PORT)
@@ -35,7 +35,7 @@ clientSocket.connect(mailserver)
 # server response | expected code: 220 -----------------
 recv = clientSocket.recv(1024).decode()
 print(recv)
-if recv[:3] != '220':			# reply err: expected reply not received
+if recv[:3] != '220':           # reply err: expected reply not received
     print("220 reply not received from server.")
 
 # Send HELO command and print server response.
@@ -45,7 +45,7 @@ clientSocket.send(heloCommand.encode())
 # server response | expected code: 250 -----------------
 recv1 = clientSocket.recv(1024).decode()
 print(recv1)
-if recv1[:3] != '250':			# reply err: expected reply not received
+if recv1[:3] != '250':          # reply err: expected reply not received
     print("250 reply not received from server.")
 
 # =====================================================================
@@ -57,7 +57,7 @@ clientSocket.send(stlsCommand.encode())
 # server response | expected code: 220 -----------------
 recvtls = clientSocket.recv(1024).decode()
 print(recvtls)
-if recvtls[:3] != '220':			# reply err: expected reply not received
+if recvtls[:3] != '220':        # reply err: expected reply not received
     print("220 reply not received from server.")
 
 # Wrap socket using SSL
@@ -70,7 +70,7 @@ secureSocket.send(authCommand.encode())
 # server response | expected code: 334 -----------------
 recva1 = secureSocket.recv(1024).decode()
 print(recva1)
-if recva1[:3] != '334':			# reply err: expected reply not received
+if recva1[:3] != '334':         # reply err: expected reply not received
     print("334 reply not received from server.")
 
 # Send base64 encrypted username
@@ -82,7 +82,7 @@ print('test')
 # server response | expected code: 334 -----------------
 recva2 = secureSocket.recv(1024).decode()
 print(recva2)
-if recva2[:3] != '334':			# reply err: expected reply not received
+if recva2[:3] != '334':         # reply err: expected reply not received
     print("334 reply not received from server.")
 
 # Send base64 encrypted password
@@ -93,7 +93,7 @@ secureSocket.send(pass64 + '\r\n'.encode())
 # server response | expected code: 235 -----------------
 recva3 = secureSocket.recv(1024).decode()
 print(recva3)
-if recva3[:3] != '235':			# reply err: expected reply not received
+if recva3[:3] != '235':	        # reply err: expected reply not received
     print("235 reply not received from server.")
 
 # Send MAIL FROM command and print server response.
@@ -103,7 +103,7 @@ secureSocket.send(fromCommand.encode())
 # server response | expected code: 250 -----------------
 recv2 = secureSocket.recv(1024).decode()
 print(recv2)
-if recv2[:3] != '250':			# reply err: expected reply not received
+if recv2[:3] != '250':          # reply err: expected reply not received
     print("250 reply not received from server.")
 
 # Send RCPT TO command and print server response.
@@ -113,7 +113,7 @@ secureSocket.send(toCommand.encode())
 # server response | expected code: 250 -----------------
 recv3 = secureSocket.recv(1024).decode()
 print(recv3)
-if recv3[:3] != '250':			# reply err: expected reply not received
+if recv3[:3] != '250':          # reply err: expected reply not received
     print("250 reply not received from server.")
 
 # Send DATA command and print server response.
@@ -123,7 +123,7 @@ secureSocket.send(dataCommand.encode())
 # server response | expected code: 354 -----------------
 recv4 = secureSocket.recv(1024).decode()
 print(recv4)
-if recv4[:3] != '354':			# reply err: expected reply not received
+if recv4[:3] != '354':          # reply err: expected reply not received
     print("354 reply not received from server.")
 
 # Send message data.
@@ -144,10 +144,11 @@ secureSocket.send(quitCommand.encode())
 # server response | expected code: 221 -----------------
 recvQ = secureSocket.recv(1024).decode()
 print(recvQ)
-if recvQ[:3] != '221':			# reply err: expected reply not received
+if recvQ[:3] != '221':          # reply err: expected reply not received
     print("221 reply not received from server.")
 
 # _____________________________________________________________________
 
-secureSocket.close()			# close socket when done
-clientSocket.close()
+secureSocket.close()            # close socket when done
+clientSocket.close()            # ensure sockets closed
+# :: END OF FILE :: #
