@@ -50,14 +50,15 @@ img.add_header('Content-ID', '<{}>'.format(img_path))
 msg.attach(img)
 
 session = smtplib.SMTP(MAIL_SERVER, MAIL_PORT)
-#
+# Send EHLO command using smtplib
 session.ehlo()
-#
+# Send STARTTLS command using smtplib
 session.starttls()
-#
+# Send AUTH credentials via login command
 session.login(sender, password)
-#
+# Send 
 session.sendmail(sender, recipient, msg.as_string())
 #
 session.quit()
-
+# _____________________________________________________________________
+exit(code=0)
