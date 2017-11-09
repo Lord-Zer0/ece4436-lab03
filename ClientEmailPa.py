@@ -11,6 +11,7 @@
 # Mail Server: [ 'smtp.gmail.com' ]                              #
 # Sender: 'davgren3@gmail.com'                                   #
 # Recipient: 'cmccaul8@uwo.ca'                                   #
+# Note: Sends text-only emails with sockets                      #
 # -------------------------------------------------------------- #
 
 # BASIC SETUP & INITIALIZATION
@@ -18,7 +19,7 @@
 # import statements ::
 from socket import *			# import socket module
 import base64                   # for encoding auth credentials
-import ssl
+import ssl                      # for secure connection to server
 
 # define sample message data
 msg = "\r\n I love computer networks!"
@@ -60,9 +61,8 @@ print(recvtls)
 if recvtls[:3] != '220':        # reply err: expected reply not received
     print("220 reply not received from server.")
 
-# Wrap socket using SSL
+# Wrap socket using SSL --------------------------------
 secureSocket = ssl.wrap_socket(clientSocket)
-print('test')
 
 # Send AUTH command and print server response.
 authCommand = 'AUTH LOGIN\r\n'
@@ -78,7 +78,6 @@ username = "davgren3@gmail.com"
 username = username.encode('utf-8')
 user64 = base64.b64encode(username)     # encrypt username
 secureSocket.send(user64 + '\r\n'.encode())
-print('test')
 # server response | expected code: 334 -----------------
 recva2 = secureSocket.recv(1024).decode()
 print(recva2)
@@ -151,4 +150,5 @@ if recvQ[:3] != '221':          # reply err: expected reply not received
 
 secureSocket.close()            # close socket when done
 clientSocket.close()            # ensure sockets closed
+exit(code=0)                    # return success
 # :: END OF FILE :: #
