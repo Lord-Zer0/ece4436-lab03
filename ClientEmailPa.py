@@ -16,7 +16,7 @@
 # BASIC SETUP & INITIALIZATION
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # import statements ::
-from socket import *			# import socket module
+from socket import *            # import socket module
 import base64                   # for encoding auth credentials
 import ssl
 
@@ -151,4 +151,5 @@ if recvQ[:3] != '221':          # reply err: expected reply not received
 
 secureSocket.close()            # close socket when done
 clientSocket.close()            # ensure sockets closed
+exit(code=0)
 # :: END OF FILE :: #
