@@ -1,9 +1,9 @@
 # Lab 03 Mail Client -- Part Three
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= #
-# Authors: Connor McCauley, Ashley Ottogalli	#
-# Email: cmccaul8@uwo.ca, aottogal@uwo.ca 		#
-# Date Modified: 2017-11-08						#
-# Filename: ClientEmailPc.py					#
+# Authors: Connor McCauley, Ashley Ottogalli    #
+# Email: cmccaul8@uwo.ca, aottogal@uwo.ca       #
+# Date Modified: 2017-11-08                     #
+# Filename: ClientEmailPc.py                    #
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= #
 
 # ------------------- Additional Information ------------------- #
