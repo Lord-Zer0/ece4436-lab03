@@ -2,7 +2,7 @@
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= #
 # Authors: Connor McCauley, Ashley Ottogalli    #
 # Email: cmccaul8@uwo.ca, aottogal@uwo.ca       #
-# Date Modified: 2017-11-08                     #
+# Date Modified: 2017-11-09                     #
 # Filename: ClientEmailPa.py                    #
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= #
 
@@ -18,12 +18,12 @@
 # import statements ::
 from socket import *            # import socket module
 import base64                   # for encoding auth credentials
-import ssl
+import ssl                      # for securely wrapping socket
 
 # define sample message data
 msg = "\r\n I love computer networks!"
 endmsg = '\r\n.\r\n'            # msg ends with '.' on a line by itself
-MAIL_PORT = 587                 # using default SMTP port
+MAIL_PORT = 587                 # using default SMTP port 587
 
 # Choose a mail server (e.g. Google mail server) and call it mailserver
 mailserver = ('smtp.gmail.com', MAIL_PORT)
@@ -31,7 +31,7 @@ mailserver = ('smtp.gmail.com', MAIL_PORT)
 # Create socket called clientSocket and establish a TCP connection with mailserver
 # Use SOCK_STREAM for TCP ------------------------------
 clientSocket = socket(AF_INET, SOCK_STREAM)
-clientSocket.connect(mailserver)
+clientSocket.connect(mailserver)  # establish initial connection
 # server response | expected code: 220 -----------------
 recv = clientSocket.recv(1024).decode()
 print(recv)
@@ -60,9 +60,9 @@ print(recvtls)
 if recvtls[:3] != '220':        # reply err: expected reply not received
     print("220 reply not received from server.")
 
-# Wrap socket using SSL
+# Gmail server requires both TLS and SSL
+# Wrap socket using SSL --------------------------------
 secureSocket = ssl.wrap_socket(clientSocket)
-print('test')
 
 # Send AUTH command and print server response.
 authCommand = 'AUTH LOGIN\r\n'
@@ -78,7 +78,6 @@ username = "davgren3@gmail.com"
 username = username.encode('utf-8')
 user64 = base64.b64encode(username)     # encrypt username
 secureSocket.send(user64 + '\r\n'.encode())
-print('test')
 # server response | expected code: 334 -----------------
 recva2 = secureSocket.recv(1024).decode()
 print(recva2)
